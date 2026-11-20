@@ -1,0 +1,4 @@
+- **User constraint:** Extend only initially fast cues, preserving starts and text and never shortening ends. Limit extensions to 900 ms and preserve an 80 ms gap before the next start, or the original gap if smaller. Use `video_end` as the last cue’s boundary. Leave readable cues unchanged.
+- **Design hypothesis:** Count non-whitespace Unicode code points. Compute the required duration by rounding up `count × 1000 / 17` milliseconds. Extend fast cues to that duration when permitted; otherwise extend to their allowed limit.
+- **Edge case:** If the original gap is below 80 ms, the cue cannot extend. Empty or whitespace-only text remains unchanged.
+- **Stopping check:** Verify every constraint, the example’s `[1000,1900]`, and recovery of at least 90% of initially fast, feasible cues; this design should recover all feasible cues.

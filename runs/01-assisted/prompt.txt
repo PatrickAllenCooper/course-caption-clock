@@ -1,0 +1,12 @@
+A lecture caption editor wants to give viewers enough time to read without moving the start of a spoken line. Implement ends(cues, video_end) returning a list of integer end times in milliseconds. Each cue is (start_ms, end_ms, text), ordered, positive-duration, in-video, nonoverlapping. Count non-whitespace Unicode code points. Target at most 17 per second. You may extend an end by at most 900 ms, leaving at least 80 ms before the next start (for the last cue use video_end with no gap). If the original already has less gap, preserve it. Never shorten, move or change text. Recover at least 90% of initially fast cues that can reach the target under these limits. Keep already readable cues unchanged. Development example: [(0,500,'a'*17),(1300,1900,'ok')], video_end=2400 should produce [1000,1900].
+
+Starting implementation
+def ends(cues, video_end):
+    return [end for start, end, text in cues]
+
+Saved planning note
+- **User constraint:** Extend only initially fast cues, preserving starts and text and never shortening ends. Limit extensions to 900 ms and preserve an 80 ms gap before the next start, or the original gap if smaller. Use `video_end` as the last cue’s boundary. Leave readable cues unchanged.
+- **Design hypothesis:** Count non-whitespace Unicode code points. Compute the required duration by rounding up `count × 1000 / 17` milliseconds. Extend fast cues to that duration when permitted; otherwise extend to their allowed limit.
+- **Edge case:** If the original gap is below 80 ms, the cue cannot extend. Empty or whitespace-only text remains unchanged.
+- **Stopping check:** Verify every constraint, the example’s `[1000,1900]`, and recovery of at least 90% of initially fast, feasible cues; this design should recover all feasible cues.
+Return only a complete Python module implementing this function. Use standard library only. No tools, external files, persistent state or prose. The evaluator will import the module.

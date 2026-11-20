@@ -1,0 +1,18 @@
+def ends(cues, video_end):
+    result = []
+    for i, (start, end, text) in enumerate(cues):
+        count = sum(not char.isspace() for char in text)
+        required_duration = (count * 1000 + 16) // 17
+
+        if required_duration <= end - start:
+            result.append(end)
+            continue
+
+        if i + 1 < len(cues):
+            boundary = max(end, cues[i + 1][0] - 80)
+        else:
+            boundary = video_end
+
+        result.append(min(start + required_duration, end + 900, boundary))
+
+    return result

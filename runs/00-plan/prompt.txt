@@ -1,0 +1,7 @@
+A lecture caption editor wants to give viewers enough time to read without moving the start of a spoken line. Implement ends(cues, video_end) returning a list of integer end times in milliseconds. Each cue is (start_ms, end_ms, text), ordered, positive-duration, in-video, nonoverlapping. Count non-whitespace Unicode code points. Target at most 17 per second. You may extend an end by at most 900 ms, leaving at least 80 ms before the next start (for the last cue use video_end with no gap). If the original already has less gap, preserve it. Never shorten, move or change text. Recover at least 90% of initially fast cues that can reach the target under these limits. Keep already readable cues unchanged. Development example: [(0,500,'a'*17),(1300,1900,'ok')], video_end=2400 should produce [1000,1900].
+
+Starting implementation
+def ends(cues, video_end):
+    return [end for start, end, text in cues]
+
+Plan only. In at most 130 words identify the user constraint, one design hypothesis, an edge case and a stopping check. No code. No tools. No questions.
